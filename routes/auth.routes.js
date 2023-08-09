@@ -28,7 +28,7 @@ router.post("/sign-up", (req, res, next) => {
         })
       })
       .then(userFromDB => {
-        console.log('Newly created user is: ', userFromDB);
+        // console.log('Newly created user is: ', userFromDB);
         res.redirect('/user-profile');
       })
       .catch(error => next(error));
