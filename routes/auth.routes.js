@@ -10,7 +10,9 @@ router.get("/sign-up", (req, res, next) => {
     res.render("auth/sign-up");
 });
 
-router.get('/user-profile', (req, res) => res.render('users/users-profile'));
+router.get('/user-profile', (req, res) => {
+  res.render('users/users-profile', { userInSession: req.session.currentUser })
+});
 
 router.post("/sign-up", (req, res, next) => {
     // console.log(req.body);
@@ -34,7 +36,9 @@ router.post("/sign-up", (req, res, next) => {
       .then(user => {
         console.log(user.username)
         // console.log('Newly created user is: ', userFromDB);
-        res.render('users/users-profile', {user});
+        // res.render('users/users-profile', {user});
+        req.session.currentUser = user;
+        res.redirect('/user-profile');
       })
       .catch(error => {
         if (error.code === 11000) {
@@ -54,6 +58,8 @@ router.get('/login', (req, res) => res.render('auth/login'));
 router.post('/login', (req, res, next) => {
   const { username, hashedPassword } = req.body;
  
+  console.log('SESSION =====> ', req.session);
+  // everything else stays untouched
   if (username === '' || hashedPassword === '') {
     res.render('auth/login', {
       errorMessage: 'Please enter both, email and password to login.'
@@ -68,7 +74,9 @@ router.post('/login', (req, res, next) => {
         res.render('auth/login', { errorMessage: 'User not found and/or incorrect password.' });
         return;
       } else if (bcryptjs.compareSync(hashedPassword, user.hashedPassword)) {
-        res.render('users/users-profile', { user });
+        // res.render('users/users-profile', { user });
+        req.session.currentUser = user;
+        res.redirect('/user-profile');
       } else {
         console.log("Incorrect password. ");
         res.render('auth/login', { errorMessage: 'User not found and/or incorrect password.' });

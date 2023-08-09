@@ -14,6 +14,16 @@ const express = require('express');
 const hbs = require('hbs');
 
 const app = express();
+//     |
+//     |-----------------------------|
+// use session here:                 V
+require('./config/session.config')(app);
+//                                  ^
+//                                  |
+// the "app" that gets passed here is the
+// previously defined Express app (const app = express();)
+
+// ... the rest of this file stays unchanged
 
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require('./config')(app);
