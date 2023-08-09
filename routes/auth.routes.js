@@ -6,12 +6,30 @@ const User = require('../models/User.model');
 const bcryptjs = require('bcryptjs');
 const saltRounds = 10;
 
+// routes/auth.routes.js
+
+// ... all other imports stay unchanged
+
+// require auth middleware
+const { isLoggedIn, isLoggedOut } = require('../middleware/route-guard.js');
+
+// ...
 router.get("/sign-up", (req, res, next) => {
     res.render("auth/sign-up");
 });
-
-router.get('/user-profile', (req, res) => {
+// nothing gets changed except the GET /userProfile route
+//
+//                         .: ADDED :.
+router.get('/user-profile', isLoggedIn, (req, res) => {
   res.render('users/users-profile', { userInSession: req.session.currentUser })
+});
+
+router.get('/main', isLoggedIn, (req, res) => {
+  res.render('users/main', { userInSession: req.session.currentUser })
+});
+
+router.get('/private', isLoggedIn, (req, res) => {
+  res.render('users/private', { userInSession: req.session.currentUser })
 });
 
 router.post("/sign-up", (req, res, next) => {
