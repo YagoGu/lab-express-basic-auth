@@ -1,11 +1,11 @@
-<h1>Sign Up</h1>
+<h1>Login</h1>
 
-<form action="/sign-up" method="POST">
+<form action="/login" method="POST">
     <label for="username">User</label>
     <input type="text" name="username" id="username" placeholder="Write your username...">
     <label for="hashedPassword">Password</label>
     <input type="text" name="hashedPassword" id="hashedPassword" placeholder="Write your password...">
-    <button type="submit">Create user</button>
+    <button type="submit">Log in</button>
     {{#if errorMessage}}
         <p class="error">{{errorMessage}}</p>
     {{/if}}
